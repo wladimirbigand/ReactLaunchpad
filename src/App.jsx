@@ -9,7 +9,13 @@ import {
   Copy, 
   Check, 
   AlertCircle,
-  Info
+  Info,
+  Github,
+  Globe,
+  UploadCloud,
+  FileJson,
+  Save,
+  RefreshCw
 } from 'lucide-react';
 
 // Composant pour afficher un bloc de code avec bouton de copie
@@ -62,9 +68,11 @@ const CodeBlock = ({ code, language = "bash" }) => {
 
 export default function App() {
   const [projectName, setProjectName] = useState('mon-projet');
+  const [githubUsername, setGithubUsername] = useState('ton-pseudo');
 
   // Sécuriser le nom du projet (pas d'espaces, caractères spéciaux basiques)
   const safeProjectName = projectName.trim().toLowerCase().replace(/[^a-z0-9-_]/g, '-') || 'mon-projet';
+  const safeGithubUsername = githubUsername.trim().replace(/[^a-zA-Z0-9-]/g, '') || 'ton-pseudo';
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-blue-200">
@@ -81,18 +89,34 @@ export default function App() {
             </div>
           </div>
           
-          <div className="mt-4 sm:mt-0 flex items-center gap-3 bg-slate-100 p-2 rounded-lg border border-slate-200">
-            <label htmlFor="project-name" className="text-sm font-medium text-slate-600 ml-2">
-              Nom du projet :
-            </label>
-            <input
-              id="project-name"
-              type="text"
-              value={projectName}
-              onChange={(e) => setProjectName(e.target.value)}
-              className="px-3 py-1.5 rounded-md border border-slate-300 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none w-48 font-mono"
-              placeholder="mon-projet"
-            />
+          <div className="mt-4 sm:mt-0 flex flex-col sm:flex-row gap-3 bg-slate-100 p-2 rounded-lg border border-slate-200">
+            <div className="flex items-center">
+              <label htmlFor="project-name" className="text-sm font-medium text-slate-600 ml-2 mr-2">
+                Projet :
+              </label>
+              <input
+                id="project-name"
+                type="text"
+                value={projectName}
+                onChange={(e) => setProjectName(e.target.value)}
+                className="px-3 py-1.5 rounded-md border border-slate-300 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none w-32 font-mono"
+                placeholder="mon-projet"
+              />
+            </div>
+            <div className="hidden sm:block w-px bg-slate-300 my-1"></div>
+            <div className="flex items-center">
+              <label htmlFor="github-username" className="text-sm font-medium text-slate-600 ml-2 mr-2">
+                GitHub :
+              </label>
+              <input
+                id="github-username"
+                type="text"
+                value={githubUsername}
+                onChange={(e) => setGithubUsername(e.target.value)}
+                className="px-3 py-1.5 rounded-md border border-slate-300 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none w-32 font-mono"
+                placeholder="ton-pseudo"
+              />
+            </div>
           </div>
         </div>
       </header>
@@ -261,6 +285,7 @@ export default {
 
           {/* ÉTAPE 5 */}
           <section className="relative">
+            <div className="absolute top-0 left-6 -ml-px h-full w-0.5 bg-slate-200" aria-hidden="true"></div>
             <div className="relative flex items-start gap-6">
               <div className="bg-gradient-to-br from-emerald-400 to-emerald-600 text-white rounded-full p-3 ring-8 ring-slate-50 relative z-10 shadow-lg shadow-emerald-200">
                 <Rocket size={24} />
@@ -280,6 +305,196 @@ export default {
 
                 <div className="mt-8 bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm text-slate-500">
                   <strong className="text-slate-700">Le saviez-vous ?</strong> Si vous faites des modifications dans votre code sur VS Code et que vous sauvegardez, la page web se mettra à jour instantanément sans même avoir besoin de rafraîchir. C'est la magie du <em>Hot Module Replacement (HMR)</em> de Vite !
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* SÉPARATEUR DÉPLOIEMENT */}
+          <div className="relative py-8">
+            <div className="absolute left-6 -ml-px h-full w-0.5 bg-slate-200" aria-hidden="true"></div>
+            <div className="relative flex items-center gap-6">
+              <div className="bg-slate-200 rounded-full p-2 ring-8 ring-slate-50 relative z-10 ml-2">
+                <Globe size={16} className="text-slate-500" />
+              </div>
+              <h2 className="text-lg font-bold text-slate-500 uppercase tracking-widest">Phase 2 : Déploiement en ligne</h2>
+            </div>
+          </div>
+
+          {/* ÉTAPE 6 */}
+          <section className="relative">
+            <div className="absolute top-0 left-6 -ml-px h-full w-0.5 bg-slate-200" aria-hidden="true"></div>
+            <div className="relative flex items-start gap-6">
+              <div className="bg-slate-800 text-white rounded-full p-3 ring-8 ring-slate-50 relative z-10 shadow-lg">
+                <Github size={24} />
+              </div>
+              <div className="flex-1 bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-100">
+                <h2 className="text-xl font-bold text-slate-900 mb-2">6. Pousser le code sur GitHub</h2>
+                <p className="text-slate-600 mb-4">
+                  Avant de déployer, votre code doit exister sur un dépôt GitHub. Rendez-vous sur GitHub, cliquez sur <strong>New</strong> pour créer un dépôt nommé <strong>{safeProjectName}</strong> (Public, sans README ni .gitignore).
+                </p>
+                <p className="text-slate-600 mb-2">
+                  Dans le terminal (arrêtez le serveur local avec <kbd className="bg-slate-100 px-1.5 py-0.5 rounded border border-slate-300 text-xs shadow-sm">Ctrl + C</kbd>), tapez :
+                </p>
+                <CodeBlock code={`git init\ngit add .\ngit commit -m "Premier commit"\ngit branch -M main`} language="bash" />
+                <p className="text-slate-600 mt-6 mb-2">
+                  Liez ensuite votre projet local à GitHub et poussez votre code :
+                </p>
+                <CodeBlock code={`git remote add origin https://github.com/${safeGithubUsername}/${safeProjectName}.git\ngit push -u origin main`} language="bash" />
+              </div>
+            </div>
+          </section>
+
+          {/* ÉTAPE 7 */}
+          <section className="relative">
+            <div className="absolute top-0 left-6 -ml-px h-full w-0.5 bg-slate-200" aria-hidden="true"></div>
+            <div className="relative flex items-start gap-6">
+              <div className="bg-purple-100 text-purple-600 rounded-full p-3 ring-8 ring-slate-50 relative z-10">
+                <UploadCloud size={24} />
+              </div>
+              <div className="flex-1 bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-100">
+                <h2 className="text-xl font-bold text-slate-900 mb-2">7. Installer l'outil de déploiement</h2>
+                <p className="text-slate-600 mb-4">
+                  Ce petit paquet va s'occuper d'envoyer automatiquement la version finalisée du site sur GitHub Pages.
+                </p>
+                <CodeBlock code="npm install gh-pages --save-dev" language="bash" />
+              </div>
+            </div>
+          </section>
+
+          {/* ÉTAPE 8 */}
+          <section className="relative">
+            <div className="absolute top-0 left-6 -ml-px h-full w-0.5 bg-slate-200" aria-hidden="true"></div>
+            <div className="relative flex items-start gap-6">
+              <div className="bg-orange-100 text-orange-600 rounded-full p-3 ring-8 ring-slate-50 relative z-10">
+                <FileJson size={24} />
+              </div>
+              <div className="flex-1 bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-100">
+                <h2 className="text-xl font-bold text-slate-900 mb-4">8. Configurer Vite et le projet</h2>
+                
+                <h3 className="font-bold text-slate-800 mb-2">A. Modifier <code className="bg-slate-100 px-1 rounded text-pink-600 text-sm font-normal">vite.config.js</code></h3>
+                <p className="text-slate-600 mb-2">
+                  Ouvrez le fichier à la racine et ajoutez la propriété <code>base</code> avec le nom exact de votre dépôt :
+                </p>
+                <CodeBlock code={`import { defineConfig } from 'vite'\nimport react from '@vitejs/plugin-react'\n\nexport default defineConfig({\n  plugins: [react()],\n  base: '/${safeProjectName}/',\n})`} language="javascript" />
+
+                <h3 className="font-bold text-slate-800 mt-6 mb-2">B. Modifier <code className="bg-slate-100 px-1 rounded text-pink-600 text-sm font-normal">package.json</code></h3>
+                <p className="text-slate-600 mb-2">
+                  Dans la section <code className="bg-slate-100 px-1 rounded text-sm">"scripts"</code>, ajoutez les lignes <code>"predeploy"</code> et <code>"deploy"</code> :
+                </p>
+                <CodeBlock code={`"scripts": {\n  "dev": "vite",\n  "build": "vite build",\n  "lint": "eslint .",\n  "preview": "vite preview",\n  "predeploy": "npm run build",\n  "deploy": "gh-pages -d dist"\n}`} language="json" />
+              </div>
+            </div>
+          </section>
+
+          {/* ÉTAPE 9 */}
+          <section className="relative">
+            <div className="absolute top-0 left-6 -ml-px h-full w-0.5 bg-slate-200" aria-hidden="true"></div>
+            <div className="relative flex items-start gap-6">
+              <div className="bg-blue-100 text-blue-600 rounded-full p-3 ring-8 ring-slate-50 relative z-10">
+                <Terminal size={24} />
+              </div>
+              <div className="flex-1 bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-100">
+                <h2 className="text-xl font-bold text-slate-900 mb-2">9. Lancer le déploiement</h2>
+                <p className="text-slate-600 mb-4">
+                  React va créer une version optimisée de votre site (le dossier caché <code>dist</code>) et l'envoyer uniquement sur une branche spéciale appelée <code>gh-pages</code>.
+                </p>
+                <CodeBlock code="npm run deploy" language="bash" />
+              </div>
+            </div>
+          </section>
+
+          {/* ÉTAPE 10 */}
+          <section className="relative">
+            <div className="relative flex items-start gap-6">
+              <div className="bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-full p-3 ring-8 ring-slate-50 relative z-10 shadow-lg shadow-indigo-200">
+                <Globe size={24} />
+              </div>
+              <div className="flex-1 bg-white rounded-2xl p-6 md:p-8 shadow-lg shadow-slate-200/50 border border-indigo-100 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-bl-full -z-10"></div>
+                <h2 className="text-2xl font-bold text-slate-900 mb-2">10. Activer le site sur GitHub 🎉</h2>
+                <p className="text-slate-600 mb-4 text-lg">
+                  Il ne reste plus qu'un petit réglage pour que votre site soit accessible à tous :
+                </p>
+                <ul className="space-y-3 text-slate-600 list-decimal list-inside mb-6">
+                  <li>Retournez sur la page de votre dépôt sur GitHub, allez dans l'onglet <strong>Settings</strong>.</li>
+                  <li>Dans le menu de gauche, cliquez sur <strong>Pages</strong>.</li>
+                  <li>Sous <em>Source</em>, assurez-vous que <strong>Deploy from a branch</strong> est sélectionné.</li>
+                  <li>Dans <em>Branch</em>, sélectionnez <strong>gh-pages</strong> et laissez le dossier sur <strong>/ (root)</strong>, puis cliquez sur <strong>Save</strong>.</li>
+                </ul>
+                
+                <div className="mt-6 bg-indigo-50 border border-indigo-100 rounded-xl p-5 text-center shadow-inner">
+                  <p className="text-sm text-indigo-600 mb-2 uppercase tracking-wide font-bold">Votre site sera en ligne d'ici une minute sur :</p>
+                  <a href={`https://${githubUsername}.github.io/${projectName}/`} target="_blank" rel="noreferrer" className="text-indigo-700 font-mono font-bold text-lg md:text-xl hover:underline break-all">
+                    https://{githubUsername}.github.io/{projectName}/
+                  </a>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* SÉPARATEUR MISE À JOUR */}
+          <div className="relative py-8">
+            <div className="absolute left-6 -ml-px h-full w-0.5 bg-slate-200" aria-hidden="true"></div>
+            <div className="relative flex items-center gap-6">
+              <div className="bg-slate-200 rounded-full p-2 ring-8 ring-slate-50 relative z-10 ml-2">
+                <RefreshCw size={16} className="text-slate-500" />
+              </div>
+              <h2 className="text-lg font-bold text-slate-500 uppercase tracking-widest">Phase 3 : Mettre à jour le site</h2>
+            </div>
+          </div>
+
+          {/* ÉTAPE 11 */}
+          <section className="relative">
+            <div className="absolute top-0 left-6 -ml-px h-full w-0.5 bg-slate-200" aria-hidden="true"></div>
+            <div className="relative flex items-start gap-6">
+              <div className="bg-teal-100 text-teal-600 rounded-full p-3 ring-8 ring-slate-50 relative z-10">
+                <Save size={24} />
+              </div>
+              <div className="flex-1 bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-100">
+                <h2 className="text-xl font-bold text-slate-900 mb-2">11. Sauvegarder le code source</h2>
+                <p className="text-slate-600 mb-4">
+                  À chaque fois que vous faites une modification en local, il faut sauvegarder l'historique sur la branche <code>main</code> avant de déployer.
+                </p>
+                <CodeBlock code={`git add .\ngit commit -m "Ajout d'un nouveau bouton"\ngit push origin main`} language="bash" />
+                <p className="text-slate-500 text-sm mt-2">
+                  <em>N'hésitez pas à remplacer "Ajout d'un nouveau bouton" par ce que vous avez réellement modifié.</em>
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* ÉTAPE 12 */}
+          <section className="relative">
+            <div className="relative flex items-start gap-6">
+              <div className="bg-gradient-to-br from-cyan-500 to-blue-600 text-white rounded-full p-3 ring-8 ring-slate-50 relative z-10 shadow-lg shadow-cyan-200">
+                <Rocket size={24} />
+              </div>
+              <div className="flex-1 bg-white rounded-2xl p-6 md:p-8 shadow-lg shadow-slate-200/50 border border-cyan-100 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-50 rounded-bl-full -z-10"></div>
+                <h2 className="text-xl font-bold text-slate-900 mb-2">12. Déployer la mise à jour</h2>
+                <p className="text-slate-600 mb-4">
+                  C'est ici que la magie opère. Relancez simplement la même commande que pour le premier déploiement :
+                </p>
+                <CodeBlock code="npm run deploy" language="bash" />
+                <p className="text-slate-600 mt-4 mb-6">
+                  Le script va recréer une version toute neuve du site (le dossier <code>dist</code>) et l'envoyer remplacer l'ancienne sur GitHub Pages.
+                </p>
+
+                <div className="mt-4 bg-amber-50 border border-amber-200 rounded-xl p-5 shadow-sm">
+                  <div className="flex items-start gap-3">
+                    <AlertCircle className="text-amber-600 shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="font-bold text-amber-900 text-lg mb-1">⏱️ Patience et cache navigateur</h4>
+                      <p className="text-amber-800 text-sm mb-3">
+                        Une fois la commande terminée, attendez 1 à 2 minutes. GitHub a besoin d'un instant pour traiter la mise à jour sur ses serveurs.
+                      </p>
+                      <p className="text-amber-900 text-sm font-medium">
+                        💡 Astuce de pro : Si vous ne voyez pas les changements, c'est sûrement le cache ! 
+                        Faites un <strong>Hard Refresh</strong> avec <kbd className="bg-amber-100 px-1.5 py-0.5 rounded border border-amber-300 shadow-sm text-xs">Ctrl + F5</kbd> (ou <kbd className="bg-amber-100 px-1.5 py-0.5 rounded border border-amber-300 shadow-sm text-xs">Cmd ⌘ + Shift ⇧ + R</kbd> sur Mac) pour forcer le téléchargement de la nouvelle version.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
