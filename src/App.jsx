@@ -10,7 +10,6 @@ import {
   Check, 
   AlertCircle,
   Info,
-  Github,
   Globe,
   UploadCloud,
   FileJson,
@@ -326,7 +325,7 @@ export default {
             <div className="absolute top-0 left-6 -ml-px h-full w-0.5 bg-slate-200" aria-hidden="true"></div>
             <div className="relative flex items-start gap-6">
               <div className="bg-slate-800 text-white rounded-full p-3 ring-8 ring-slate-50 relative z-10 shadow-lg">
-                <Github size={24} />
+                <Globe size={24} />
               </div>
               <div className="flex-1 bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-100">
                 <h2 className="text-xl font-bold text-slate-900 mb-2">6. Pousser le code sur GitHub</h2>
