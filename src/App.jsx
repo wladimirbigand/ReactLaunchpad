@@ -17,6 +17,8 @@ import {
   RefreshCw
 } from 'lucide-react';
 
+import { FaGithub } from "react-icons/fa";
+
 // Composant pour afficher un bloc de code avec bouton de copie
 const CodeBlock = ({ code, language = "bash" }) => {
   const [copied, setCopied] = useState(false);
@@ -230,6 +232,35 @@ export default function App() {
                       <p className="text-red-700 mt-2">
                         Puis relancez sereinement <code className="bg-red-100/80 border border-red-200 px-1.5 py-0.5 rounded text-red-900 font-mono text-xs">npx tailwindcss init -p</code>.
                       </p>
+
+                      {/* NOUVELLE OPTION 2 */}
+                      <div className="mt-6 pt-5 border-t border-red-200/80">
+                        <h4 className="font-bold text-base mb-2">Option 2 : Rétrograder à la V3 (Pour suivre un tutoriel à la lettre)</h4>
+                        <p className="text-red-700 mb-4 text-sm">
+                          Si l'erreur persiste, ou si vous avez peur d'être perdu et souhaitez que les fichiers de votre projet correspondent exactement à ceux de la vidéo/l'article que vous suivez, il vous suffit d'installer la version 3 :
+                        </p>
+                        <div className="space-y-4">
+                          <div>
+                            <span className="font-semibold text-red-800 text-xs uppercase tracking-wider">1. Désinstallez les packages actuels :</span>
+                            <div className="mt-1 -mx-1">
+                              <CodeBlock code="npm uninstall tailwindcss postcss autoprefixer" language="bash" />
+                            </div>
+                          </div>
+                          <div>
+                            <span className="font-semibold text-red-800 text-xs uppercase tracking-wider">2. Réinstallez-les en forçant la version 3 :</span>
+                            <div className="mt-1 -mx-1">
+                              <CodeBlock code="npm install -D tailwindcss@3 postcss autoprefixer" language="bash" />
+                            </div>
+                          </div>
+                          <div>
+                            <span className="font-semibold text-red-800 text-xs uppercase tracking-wider">3. Relancez la commande (elle fonctionnera !) :</span>
+                            <div className="mt-1 -mx-1">
+                              <CodeBlock code="npx tailwindcss init -p" language="bash" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
                     </div>
                   </div>
                 </div>
@@ -325,7 +356,7 @@ export default {
             <div className="absolute top-0 left-6 -ml-px h-full w-0.5 bg-slate-200" aria-hidden="true"></div>
             <div className="relative flex items-start gap-6">
               <div className="bg-slate-800 text-white rounded-full p-3 ring-8 ring-slate-50 relative z-10 shadow-lg">
-                <Globe size={24} />
+                <FaGithub size={24} />
               </div>
               <div className="flex-1 bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-100">
                 <h2 className="text-xl font-bold text-slate-900 mb-2">6. Pousser le code sur GitHub</h2>
