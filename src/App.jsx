@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 
 import { FaGithub } from "react-icons/fa";
+import { FaReact } from "react-icons/fa";
 
 // Composant pour afficher un bloc de code avec bouton de copie
 const CodeBlock = ({ code, language = "bash" }) => {
@@ -82,7 +83,7 @@ export default function App() {
         <div className="max-w-4xl mx-auto px-6 py-6 sm:flex sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
             <div className="bg-blue-600 p-2 rounded-xl text-white shadow-lg shadow-blue-200">
-              <Rocket size={28} />
+              <FaReact size={28} />
             </div>
             <div>
               <h1 className="text-2xl font-bold text-slate-900 leading-tight">React Launchpad</h1>
