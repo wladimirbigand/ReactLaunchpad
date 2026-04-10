@@ -72,9 +72,12 @@ export default function App() {
   const [projectName, setProjectName] = useState('mon-projet');
   const [githubUsername, setGithubUsername] = useState('ton-pseudo');
 
-  // Sécuriser le nom du projet (pas d'espaces, caractères spéciaux basiques)
+  // Sécuriser le nom du projet pour npm/vite (minuscules obligatoires pour les dossiers)
   const safeProjectName = projectName.trim().toLowerCase().replace(/[^a-z0-9-_]/g, '-') || 'mon-projet';
-  const safeGithubUsername = githubUsername.trim().replace(/[^a-zA-Z0-9-]/g, '') || 'ton-pseudo';
+  
+  // Conserver la casse (majuscules/minuscules) pour GitHub et vite.config.js
+  const exactProjectName = projectName.trim().replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-_]/g, '') || 'mon-projet';
+  const exactGithubUsername = githubUsername.trim().replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-_]/g, '') || 'ton-pseudo';
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-blue-200">
@@ -362,7 +365,7 @@ export default {
               <div className="flex-1 bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-100">
                 <h2 className="text-xl font-bold text-slate-900 mb-2">6. Pousser le code sur GitHub</h2>
                 <p className="text-slate-600 mb-4">
-                  Avant de déployer, votre code doit exister sur un dépôt GitHub. Rendez-vous sur GitHub, cliquez sur <strong>New</strong> pour créer un dépôt nommé <strong>{safeProjectName}</strong> (Public, sans README ni .gitignore).
+                  Avant de déployer, votre code doit exister sur un dépôt GitHub. Rendez-vous sur GitHub, cliquez sur <strong>New</strong> pour créer un dépôt nommé <strong>{exactProjectName}</strong> (Public, sans README ni .gitignore).
                 </p>
                 <p className="text-slate-600 mb-2">
                   Dans le terminal (arrêtez le serveur local avec <kbd className="bg-slate-100 px-1.5 py-0.5 rounded border border-slate-300 text-xs shadow-sm">Ctrl + C</kbd>), tapez :
@@ -371,7 +374,7 @@ export default {
                 <p className="text-slate-600 mt-6 mb-2">
                   Liez ensuite votre projet local à GitHub et poussez votre code :
                 </p>
-                <CodeBlock code={`git remote add origin https://github.com/${safeGithubUsername}/${safeProjectName}.git\ngit push -u origin main`} language="bash" />
+                <CodeBlock code={`git remote add origin https://github.com/${exactGithubUsername}/${exactProjectName}.git\ngit push -u origin main`} language="bash" />
               </div>
             </div>
           </section>
@@ -407,13 +410,13 @@ export default {
                 <p className="text-slate-600 mb-2">
                   Ouvrez le fichier à la racine et ajoutez la propriété <code>base</code> avec le nom exact de votre dépôt :
                 </p>
-                <CodeBlock code={`import { defineConfig } from 'vite'\nimport react from '@vitejs/plugin-react'\n\nexport default defineConfig({\n  plugins: [react()],\n  base: '/${safeProjectName}/',\n})`} language="javascript" />
+                <CodeBlock code={`import { defineConfig } from 'vite'\nimport react from '@vitejs/plugin-react'\n\nexport default defineConfig({\n  plugins: [react()],\n  base: '/${exactProjectName}/',\n})`} language="javascript" />
 
                 <h3 className="font-bold text-slate-800 mt-6 mb-2">B. Modifier <code className="bg-slate-100 px-1 rounded text-pink-600 text-sm font-normal">package.json</code></h3>
                 <p className="text-slate-600 mb-2">
                   Dans la section <code className="bg-slate-100 px-1 rounded text-sm">"scripts"</code>, ajoutez les lignes <code>"predeploy"</code> et <code>"deploy"</code> :
                 </p>
-                <CodeBlock code={`"scripts": {\n  "dev": "vite",\n  "build": "vite build",\n  "lint": "eslint .",\n  "preview": "vite preview",\n  "predeploy": "npm run build",\n  "deploy": "gh-pages -d dist"\n}`} language="json" />
+                <CodeBlock code={`"scripts": {\n  "dev": "vite",\n  "build": "vite build",\n  "lint": "eslint .",\n  "preview": "vite preview",\n  "predeploy": "npm run build",\n  "deploy": "gh-pages -d dist"\n},`} language="json" />
               </div>
             </div>
           </section>
@@ -456,8 +459,8 @@ export default {
                 
                 <div className="mt-6 bg-indigo-50 border border-indigo-100 rounded-xl p-5 text-center shadow-inner">
                   <p className="text-sm text-indigo-600 mb-2 uppercase tracking-wide font-bold">Votre site sera en ligne d'ici une minute sur :</p>
-                  <a href={`https://${githubUsername}.github.io/${projectName}/`} target="_blank" rel="noreferrer" className="text-indigo-700 font-mono font-bold text-lg md:text-xl hover:underline break-all">
-                    https://{githubUsername}.github.io/{projectName}/
+                  <a href={`https://${exactGithubUsername}.github.io/${exactProjectName}/`} target="_blank" rel="noreferrer" className="text-indigo-700 font-mono font-bold text-lg md:text-xl hover:underline break-all">
+                    https://{exactGithubUsername}.github.io/{exactProjectName}/
                   </a>
                 </div>
               </div>
